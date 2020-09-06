@@ -1,0 +1,25 @@
+{
+  "name": "around-express",
+  "version": "1.0.0",
+  "description": "## Directories",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/momofcats/around-express.git"
+  },
+  "author": "Yuliya Khilko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/momofcats/around-express/issues"
+  },
+  "homepage": "https://github.com/momofcats/around-express#readme",
+  "devDependencies": {
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0"
+  },
+  "dependencies": {}
+}
