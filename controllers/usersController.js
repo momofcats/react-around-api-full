@@ -6,7 +6,7 @@ const dataPath = path.join(__dirname, '..', 'data', 'users.json');
 
 const getUsers = (req, res) => getDataFromFile(dataPath)
   .then((users) => res.status(200).send(users))
-  .catch(() => res.status(404).send({ message: 'Requested resource not found' }));
+  .catch(() => res.status(500).send({ message: 'Iternal server error' }));
 
 const getUser = (req, res) => getDataFromFile(dataPath)
   .then((users) => users.find((user) => user._id === req.params.id))
