@@ -1,24 +1,32 @@
-const path = require('path');
+const User = require('../models/user');
 
-const getDataFromFile = require('../helpers/getDataFromFile');
+const getUsers = (req, res) => {
+  User.find({})
+    .then((users) => res.status(200).send({ data: users }))
+    .catch(() => res.status(500).send({ message: 'Iternal server error' }));
+};
 
-const dataPath = path.join(__dirname, '..', 'data', 'users.json');
+const getUser = (req, res) => {
+  User.findById(req.params.id)
+    .then((user) => {
+      if (user) {
+        res.staus(200).send({ data: user });
+      }
+      res.status(404).send({ message: 'User ID not found' });
+    })
+    .catch(() => res.status(500).send({ message: 'Iternal server error' }));
+};
 
-const getUsers = (req, res) => getDataFromFile(dataPath)
-  .then((users) => res.status(200).send(users))
-  .catch(() => res.status(500).send({ message: 'Iternal server error' }));
-
-const getUser = (req, res) => getDataFromFile(dataPath)
-  .then((users) => users.find((user) => user._id === req.params.id))
-  .then((user) => {
-    if (user) {
-      res.status(200).send(user);
-    }
-    res.status(404).send({ message: 'User ID not found' });
-  })
-  .catch((err) => res.status(400).send(err));
-
+const addUser = (req, res) => {
+  const { name, about, avatar } = req.body;
+  User.create({ name, about, avatar })
+    .then((user) => {
+      res.staus(200).send({ data: user });
+    })
+    .catch(() => res.status(500).send({ message: 'Iternal server error' }));
+};
 module.exports = {
   getUsers,
   getUser,
+  addUser,
 };
