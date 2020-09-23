@@ -21,9 +21,11 @@ const addUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
     .then((user) => {
-      res.staus(200).send({ data: user });
-    })
-    .catch(() => res.status(500).send({ message: 'Iternal server error' }));
+      res.send({ data: user });
+    }).catch((e) => {
+      console.error(e);
+      // res.status(500).send({ message: 'oops something went wrong' });
+    });
 };
 module.exports = {
   getUsers,

@@ -1,8 +1,12 @@
 const express = require('express');
 const path = require('path');
+
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const userRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
+
+const jsonParser = bodyParser.json();
 
 const { PORT = 3000 } = process.env;
 
@@ -14,6 +18,7 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
   useFindAndModify: false,
 });
 
+app.use(jsonParser);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/users', userRouter);
 app.use('/cards', cardsRouter);
