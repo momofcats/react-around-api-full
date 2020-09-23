@@ -18,6 +18,13 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
   useFindAndModify: false,
 });
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: '5f6ac13e2884295156e53a70',
+  };
+
+  next();
+});
 app.use(jsonParser);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/users', userRouter);
