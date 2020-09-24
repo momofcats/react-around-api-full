@@ -12,12 +12,6 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/aroundb', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
-
 app.use((req, res, next) => {
   req.user = {
     _id: '5f6ac13e2884295156e53a70',
@@ -25,6 +19,13 @@ app.use((req, res, next) => {
 
   next();
 });
+
+mongoose.connect('mongodb://localhost:27017/aroundb', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+});
+
 app.use(jsonParser);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/users', userRouter);

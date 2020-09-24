@@ -1,10 +1,20 @@
-const path = require('path');
-const getDataFromFile = require('../helpers/getDataFromFile');
+const Card = require('../models/card');
 
-const dataPath = path.join(__dirname, '..', 'data', 'cards.json');
+const getCards = (req, res) => {
+  Card.find({})
+    .then((cards) => res.send({ data: cards }))
+    .catch(() => res.status(500).send({ message: 'Iternal server error' }));
+};
 
-const getCards = (req, res) => getDataFromFile(dataPath)
-  .then((cards) => res.status(200).send(cards))
-  .catch(() => res.status(500).send({ message: 'Iternal server error' }));
+const createCard = (req, res) => {
+  const { name, link } = req.body;
+  //console.log(req.user._id);
+  Card.create({ name, link, owner: req.user._id })
+    .then((card) => {
+      res.send({ data: card });
+    }).catch((e) => {
+      console.error(e);
+    });
+};
 
-module.exports = getCards;
+module.exports = { getCards, createCard };

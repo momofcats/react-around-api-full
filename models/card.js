@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const cardSchema = new mongoose.Shchema({
+const cardSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -12,9 +12,10 @@ const cardSchema = new mongoose.Shchema({
     required: true,
     validate: {
       validator(v) {
-        return /^https?:\/\/[\w/.-]+#*$/.test(v);
+        const regExp = /^https?:\/\/[\w/,.-]+#*$/;
+        return regExp.test(v);
       },
-      message: (props) => `${props.value} is not a valid URl`,
+      message: 'Invalid Url',
     },
   },
   owner: {
@@ -30,6 +31,6 @@ const cardSchema = new mongoose.Shchema({
     type: Date,
     default: Date.now,
   },
-});
+}, { versionKey: false });
 
 module.exports = mongoose.model('card', cardSchema);

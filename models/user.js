@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
         const regExp = /^https?:\/\/[\w/,.-]+#*$/;
         return regExp.test(v);
       },
+      message: 'Invalid Url',
     },
   },
 }, { versionKey: false });
