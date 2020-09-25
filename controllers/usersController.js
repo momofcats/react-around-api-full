@@ -1,9 +1,10 @@
 const User = require('../models/user');
-
-const STATUS_CODE_BAD_REQUEST = 400;
-const STATUS_CODE_NOT_FOUND = 404;
-const STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
-const STATUS_CODE_OK = 200;
+const {
+  STATUS_CODE_BAD_REQUEST,
+  STATUS_CODE_NOT_FOUND,
+  STATUS_CODE_INTERNAL_SERVER_ERROR,
+  STATUS_CODE_OK,
+} = require('../utils/statusCodes');
 
 const getUsers = (req, res) => {
   User.find({})
@@ -13,22 +14,22 @@ const getUsers = (req, res) => {
       }
       return res.status(STATUS_CODE_OK).send({ data: users });
     })
-    .catch(() => res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Iternal server error' }));
+    .catch(() => res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' }));
 };
 
 const getUser = (req, res) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
-        return res.status(STATUS_CODE_NOT_FOUND).send({ message: 'User is not found' });
+        return res.status(STATUS_CODE_NOT_FOUND).send({ message: 'User Id is not found' });
       }
       return res.status(STATUS_CODE_OK).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return res.status(STATUS_CODE_NOT_FOUND).send({ message: 'User is not found' });
+        return res.status(STATUS_CODE_NOT_FOUND).send({ message: 'User Id is not found' });
       }
-      return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Iternal server error' });
+      return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
     });
 };
 
@@ -41,7 +42,7 @@ const addUser = (req, res) => {
       if (err.name === 'ValidationError') {
         return res.status(STATUS_CODE_BAD_REQUEST).send({ message: err.message });
       }
-      return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'oops something went wrong' });
+      return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
     });
 };
 module.exports = {
