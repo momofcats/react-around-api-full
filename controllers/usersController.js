@@ -59,15 +59,15 @@ const addUser = (req, res) => {
 
 const LoginUser = (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(STATUS_CODE_BAD_REQUEST)
+      .send({ message: 'email or password should not be empty' });
+  }
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
       res.status(STATUS_CODE_CREATED)
-        .cookie('jwt', token, {
-          httpOnly: true,
-          maxAge: 3600000 * 24 * 7,
-        })
-        .end();
+        .send({ token });
     })
     .catch((err) => {
       res.status(STATUS_CODE_UNAUTHORIZED).send({ message: err.message });
