@@ -11,14 +11,6 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '5f6ac13e2884295156e53a70',
-  };
-
-  next();
-});
-
 mongoose.connect('mongodb://localhost:27017/aroundb', {
   useNewUrlParser: true,
   useCreateIndex: true,
