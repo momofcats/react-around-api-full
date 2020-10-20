@@ -57,7 +57,7 @@ const addUser = (req, res) => {
     });
 };
 
-const LoginUser = (req, res) => {
+const loginUser = (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(STATUS_CODE_BAD_REQUEST)
@@ -77,5 +77,5 @@ module.exports = {
   getUsers,
   getUser,
   addUser,
-  LoginUser,
+  loginUser,
 };
