@@ -1,10 +1,13 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {
   STATUS_CODE_BAD_REQUEST,
   STATUS_CODE_NOT_FOUND,
   STATUS_CODE_INTERNAL_SERVER_ERROR,
   STATUS_CODE_OK,
+  STATUS_CODE_UNAUTHORIZED,
+  STATUS_CODE_CREATED,
 } = require('../utils/statusCodes');
 
 const getUsers = (req, res) => {
@@ -44,7 +47,7 @@ const addUser = (req, res) => {
       password: hash,
     }))
     .then((user) => {
-      res.status(STATUS_CODE_OK).send({ data: user });
+      res.status(STATUS_CODE_CREATED).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -53,8 +56,21 @@ const addUser = (req, res) => {
       return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
     });
 };
+
+const LoginUser = (req, res) => {
+  const { email, password } = req.body;
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+      res.status(STATUS_CODE_CREATED).send({ token });
+    })
+    .catch((err) => {
+      res.status(STATUS_CODE_UNAUTHORIZED).send({ message: err.message });
+    });
+};
 module.exports = {
   getUsers,
   getUser,
   addUser,
+  LoginUser,
 };
