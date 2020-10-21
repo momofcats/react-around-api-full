@@ -48,7 +48,7 @@ const addUser = (req, res) => {
     return res.status(STATUS_CODE_BAD_REQUEST)
       .send({ message: 'email or password should not be empty' });
   }
-  User.findOne({ email })
+  return User.findOne({ email })
     .then((admin) => {
       if (admin) {
         return res.status(STATUS_CODE_FORBIDDEN).send({ message: 'User with this email already exists' });
