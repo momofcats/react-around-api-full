@@ -8,7 +8,10 @@ const {
   STATUS_CODE_OK,
   STATUS_CODE_UNAUTHORIZED,
   STATUS_CODE_CREATED,
+  STATUS_CODE_FORBIDDEN,
 } = require('../utils/statusCodes');
+
+const SALT = 10;
 
 const getUsers = (req, res) => {
   User.find({})
@@ -38,22 +41,29 @@ const getUser = (req, res) => {
 };
 
 const addUser = (req, res) => {
-  bcrypt.hash(req.body.password, 10)
-    .then((hash) => User.create({
-      name: req.body.name,
-      about: req.body.about,
-      avatar: req.body.avatar,
-      email: req.body.email,
-      password: hash,
-    }))
-    .then((user) => {
-      res.status(STATUS_CODE_CREATED).send({ data: user });
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return res.status(STATUS_CODE_BAD_REQUEST).send({ message: err.message });
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
+  if (!email || !password) {
+    return res.status(STATUS_CODE_BAD_REQUEST)
+      .send({ message: 'email or password should not be empty' });
+  }
+  User.findOne({ email })
+    .then((admin) => {
+      if (admin) {
+        return res.status(STATUS_CODE_FORBIDDEN).send({ message: 'User with this email already exists' });
       }
-      return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
+      return bcrypt.hash(password, SALT)
+        .then((hash) => User.create({
+          name, about, avatar, email, password: hash,
+        }))
+        .then((user) => res.status(STATUS_CODE_CREATED).send({ data: user }))
+        .catch((err) => {
+          if (err.name === 'ValidationError') {
+            return res.status(STATUS_CODE_BAD_REQUEST).send({ message: err.message });
+          }
+          return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
+        });
     });
 };
 
