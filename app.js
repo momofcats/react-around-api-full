@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const userRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
+const { loginUser, addUser } = require('./controllers/usersController');
 
 const jsonParser = bodyParser.json();
 
@@ -18,6 +19,9 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
 });
 
 app.use(jsonParser);
+
+app.post('/signup', addUser);
+app.post('/signin', loginUser);
 app.use('/users', userRouter);
 app.use('/cards', cardsRouter);
 app.use((req, res) => {
