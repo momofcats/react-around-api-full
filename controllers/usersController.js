@@ -3,11 +3,9 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {
   STATUS_CODE_BAD_REQUEST,
-  STATUS_CODE_INTERNAL_SERVER_ERROR,
   STATUS_CODE_OK,
   STATUS_CODE_UNAUTHORIZED,
   STATUS_CODE_CREATED,
-  STATUS_CODE_FORBIDDEN,
 } = require('../utils/statusCodes');
 
 const NotFoundError = require('../errors/not-found-err');
@@ -64,11 +62,10 @@ const addUser = (req, res, next) => {
     .catch(next);
 };
 
-const loginUser = (req, res) => {
+const loginUser = (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(STATUS_CODE_BAD_REQUEST)
-      .send({ message: 'email or password should not be empty' });
+    throw new BadRequestError('Email or password should not be empty');
   }
   return User.findUserByCredentials(email, password)
     .then((user) => {
@@ -76,9 +73,7 @@ const loginUser = (req, res) => {
       res.status(STATUS_CODE_CREATED)
         .send({ token });
     })
-    .catch((err) => {
-      res.status(STATUS_CODE_UNAUTHORIZED).send({ message: err.message });
-    });
+    .catch(next);
 };
 module.exports = {
   getUsers,
