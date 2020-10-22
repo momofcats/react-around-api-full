@@ -11,6 +11,8 @@ const {
 } = require('../utils/statusCodes');
 
 const NotFoundError = require('../errors/not-found-err');
+const BadRequestError = require('../errors/bad-req-err');
+const ForbiddenError = require('../errors/forbidden-err');
 
 const SALT = 10;
 
@@ -36,18 +38,17 @@ const getUser = (req, res, next) => {
     .catch(next);
 };
 
-const addUser = (req, res) => {
+const addUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
   if (!email || !password) {
-    return res.status(STATUS_CODE_BAD_REQUEST)
-      .send({ message: 'email or password should not be empty' });
+    throw new BadRequestError('Email or password should not be empty');
   }
   return User.findOne({ email })
     .then((admin) => {
       if (admin) {
-        return res.status(STATUS_CODE_FORBIDDEN).send({ message: 'User with this email already exists' });
+        throw new ForbiddenError('User with this email already exists');
       }
       return bcrypt.hash(password, SALT)
         .then((hash) => User.create({
@@ -56,11 +57,11 @@ const addUser = (req, res) => {
         .then((user) => res.status(STATUS_CODE_CREATED).send({ data: user }))
         .catch((err) => {
           if (err.name === 'ValidationError') {
-            return res.status(STATUS_CODE_BAD_REQUEST).send({ message: err.message });
+            throw new BadRequestError(err.message);
           }
-          return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
         });
-    });
+    })
+    .catch(next);
 };
 
 const loginUser = (req, res) => {
