@@ -17,22 +17,23 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 8,
+    select: false,
   },
   name: {
     type: String,
-    // required: true,
-    // minlength: 2,
-    // maxlength: 30,
+    required: true,
+    minlength: 2,
+    maxlength: 30,
   },
   about: {
     type: String,
-    // required: true,
-    // minlength: 2,
-    // maxlength: 30,
+    required: true,
+    minlength: 2,
+    maxlength: 30,
   },
   avatar: {
     type: String,
-    // required: true,
+    required: true,
     validate: {
       validator: (v) => isURL(v),
       message: 'Invalid Url',
@@ -41,7 +42,7 @@ const userSchema = new mongoose.Schema({
 
 }, { versionKey: false });
 userSchema.statics.findUserByCredentials = function (email, password) {
-  return this.findOne({ email })
+  return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
         return Promise.reject(new Error('Incorrect email or password'));
