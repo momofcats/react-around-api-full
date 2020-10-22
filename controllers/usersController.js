@@ -2,9 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {
-  STATUS_CODE_BAD_REQUEST,
   STATUS_CODE_OK,
-  STATUS_CODE_UNAUTHORIZED,
   STATUS_CODE_CREATED,
 } = require('../utils/statusCodes');
 

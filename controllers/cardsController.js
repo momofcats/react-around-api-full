@@ -1,47 +1,48 @@
 const Card = require('../models/card');
 const {
-  STATUS_CODE_BAD_REQUEST,
-  STATUS_CODE_NOT_FOUND,
-  STATUS_CODE_INTERNAL_SERVER_ERROR,
   STATUS_CODE_OK,
+  STATUS_CODE_CREATED,
 } = require('../utils/statusCodes');
 
-const getCards = (req, res) => {
+const NotFoundError = require('../errors/not-found-err');
+const BadRequestError = require('../errors/bad-req-err');
+
+const getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => {
       if (cards.length === 0) {
-        return res.status(STATUS_CODE_NOT_FOUND).send({ message: 'Cards were not found' });
+        throw new NotFoundError('Cards were not found');
       }
       return res.status(STATUS_CODE_OK).send({ data: cards });
     })
-    .catch(() => res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' }));
+    .catch(next);
 };
 
-const createCard = (req, res) => {
+const createCard = (req, res, next) => {
   const { name, link } = req.body;
   Card.create({ name, link, owner: req.user._id })
     .then((card) => {
-      res.status(STATUS_CODE_OK).send({ data: card });
+      res.status(STATUS_CODE_CREATED).send({ data: card });
     }).catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(STATUS_CODE_BAD_REQUEST).send({ message: err.message });
+        throw new BadRequestError(err.message);
       }
-      return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
+      next(err);
     });
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (!card) {
-        return res.status(STATUS_CODE_NOT_FOUND).send({ message: 'Card Id is not found' });
+        throw new BadRequestError('Card Id is not found');
       }
       return res.status(STATUS_CODE_OK).send({ data: card });
     }).catch((err) => {
       if (err.name === 'CastError') {
-        return res.status(STATUS_CODE_NOT_FOUND).send({ message: 'Card Id is not found' });
+        throw new NotFoundError('Card Id is not found');
       }
-      return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
+      next(err);
     });
 };
 
