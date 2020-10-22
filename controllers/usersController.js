@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {
   STATUS_CODE_BAD_REQUEST,
-  STATUS_CODE_NOT_FOUND,
   STATUS_CODE_INTERNAL_SERVER_ERROR,
   STATUS_CODE_OK,
   STATUS_CODE_UNAUTHORIZED,
@@ -11,33 +10,30 @@ const {
   STATUS_CODE_FORBIDDEN,
 } = require('../utils/statusCodes');
 
+const NotFoundError = require('../errors/not-found-err');
+
 const SALT = 10;
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       if (users.length === 0) {
-        return res.status(STATUS_CODE_NOT_FOUND).send({ message: 'Users were not found' });
+        throw new NotFoundError('Users were not found');
       }
       return res.status(STATUS_CODE_OK).send({ data: users });
     })
-    .catch(() => res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' }));
+    .catch(next);
 };
 
-const getUser = (req, res) => {
+const getUser = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
-        return res.status(STATUS_CODE_NOT_FOUND).send({ message: 'User Id is not found' });
+        throw new NotFoundError('No user with matching ID found');
       }
       return res.status(STATUS_CODE_OK).send({ data: user });
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return res.status(STATUS_CODE_NOT_FOUND).send({ message: 'User Id is not found' });
-      }
-      return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
-    });
+    .catch(next);
 };
 
 const addUser = (req, res) => {
