@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const userRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const { loginUser, addUser } = require('./controllers/usersController');
+const { requestLogger, errorLogger } = require('./middleware/logger');
 
 const jsonParser = bodyParser.json();
 
@@ -20,7 +21,7 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
 });
 
 app.use(jsonParser);
-
+app.use(requestLogger);
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
@@ -41,7 +42,7 @@ app.use('/cards', cardsRouter);
 app.use((req, res) => {
   res.status(404).send({ message: 'Requested resource not found' });
 });
-
+app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
