@@ -35,12 +35,7 @@ const deleteCard = (req, res, next) => {
         throw new BadRequestError('Card Id is not found');
       }
       return res.status(STATUS_CODE_OK).send({ data: card });
-    }).catch((err) => {
-      if (err.name === 'CastError') {
-        throw new NotFoundError('Card Id is not found');
-      }
-      next(err);
-    });
+    }).catch(next);
 };
 
 module.exports = { getCards, createCard, deleteCard };
