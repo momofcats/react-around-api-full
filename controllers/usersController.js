@@ -50,12 +50,7 @@ const addUser = (req, res, next) => {
         .then((hash) => User.create({
           name, about, avatar, email, password: hash,
         }))
-        .then((user) => res.status(STATUS_CODE_CREATED).send({ data: user }))
-        .catch((err) => {
-          if (err.name === 'ValidationError') {
-            throw new BadRequestError(err.message);
-          }
-        });
+        .then((user) => res.status(STATUS_CODE_CREATED).send({ data: user }));
     })
     .catch(next);
 };

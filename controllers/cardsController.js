@@ -1,4 +1,5 @@
 const Card = require('../models/card');
+
 const {
   STATUS_CODE_OK,
   STATUS_CODE_CREATED,
@@ -23,12 +24,8 @@ const createCard = (req, res, next) => {
   Card.create({ name, link, owner: req.user._id })
     .then((card) => {
       res.status(STATUS_CODE_CREATED).send({ data: card });
-    }).catch((err) => {
-      if (err.name === 'ValidationError') {
-        throw new BadRequestError(err.message);
-      }
-      next(err);
-    });
+    })
+    .catch(next);
 };
 
 const deleteCard = (req, res, next) => {

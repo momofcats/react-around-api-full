@@ -1,4 +1,5 @@
 const express = require('express');
+const { celebrate, Joi, errors } = require('celebrate');
 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -20,13 +21,28 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
 
 app.use(jsonParser);
 
-app.post('/signup', addUser);
-app.post('/signin', loginUser);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().min(2).max(30).required(),
+    avatar: Joi.string().required().uri(),
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), addUser);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), loginUser);
 app.use('/users', userRouter);
 app.use('/cards', cardsRouter);
 app.use((req, res) => {
   res.status(404).send({ message: 'Requested resource not found' });
 });
+
+app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res.status(statusCode).send({
