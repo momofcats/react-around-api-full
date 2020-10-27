@@ -1,5 +1,6 @@
 const express = require('express');
 const { celebrate, Joi, errors } = require('celebrate');
+const cors = require('cors');
 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -20,6 +21,7 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
   useFindAndModify: false,
 });
 
+app.use(cors());
 app.use(jsonParser);
 app.use(requestLogger);
 
