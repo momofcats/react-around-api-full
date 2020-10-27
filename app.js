@@ -22,6 +22,7 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
 
 app.use(jsonParser);
 app.use(requestLogger);
+
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
@@ -31,14 +32,18 @@ app.post('/signup', celebrate({
     password: Joi.string().required().min(8),
   }),
 }), addUser);
+
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
 }), loginUser);
+
 app.use('/users', userRouter);
+
 app.use('/cards', cardsRouter);
+
 app.use((req, res) => {
   res.status(404).send({ message: 'Requested resource not found' });
 });
