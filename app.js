@@ -42,7 +42,7 @@ app.post('/signin', celebrate({
     password: Joi.string().required().min(8),
   }),
 }), loginUser);
-//authorization
+
 app.use(auth);
 
 app.use('/users', userRouter);
