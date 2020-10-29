@@ -18,18 +18,22 @@ const getUsers = (req, res, next) => {
       if (users.length === 0) {
         throw new NotFoundError('Users were not found');
       }
-      return res.status(STATUS_CODE_OK).send({ data: users });
+      return res.status(STATUS_CODE_OK).send(users);
     })
     .catch(next);
 };
 
 const getUser = (req, res, next) => {
-  User.findById(req.params.id)
+  let userId = req.params.id;
+  if (userId === 'me') {
+    userId = req.user._id;
+  }
+  User.findById(userId)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('No user with matching ID found');
       }
-      return res.status(STATUS_CODE_OK).send({ data: user });
+      return res.status(STATUS_CODE_OK).send(user);
     })
     .catch(next);
 };
@@ -50,7 +54,7 @@ const addUser = (req, res, next) => {
         .then((hash) => User.create({
           name, about, avatar, email, password: hash,
         }))
-        .then((user) => res.status(STATUS_CODE_CREATED).send({ data: user }));
+        .then((user) => res.status(STATUS_CODE_CREATED).send(user));
     })
     .catch(next);
 };

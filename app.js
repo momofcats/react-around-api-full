@@ -20,6 +20,7 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
   useCreateIndex: true,
   useFindAndModify: false,
 });
+const auth = require('./middleware/auth');
 
 app.use(cors());
 app.use(jsonParser);
@@ -41,9 +42,10 @@ app.post('/signin', celebrate({
     password: Joi.string().required().min(8),
   }),
 }), loginUser);
+//authorization
+app.use(auth);
 
 app.use('/users', userRouter);
-
 app.use('/cards', cardsRouter);
 
 app.use((req, res) => {
