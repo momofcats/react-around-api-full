@@ -25,7 +25,6 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
 const auth = require('./middleware/auth');
 
 app.use(cors());
-app.use(jsonParser);
 app.use(requestLogger);
 
 app.get('/crash-test', () => {
@@ -33,6 +32,8 @@ app.get('/crash-test', () => {
     throw new Error('Server will crash now');
   }, 0);
 });
+
+app.use(jsonParser);
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
