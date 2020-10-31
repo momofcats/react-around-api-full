@@ -11,6 +11,7 @@ const BadRequestError = require('../errors/bad-req-err');
 const ForbiddenError = require('../errors/forbidden-err');
 
 const SALT = 10;
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -66,7 +67,8 @@ const loginUser = (req, res, next) => {
   }
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'super-strong-secret', { expiresIn: '7d' });
       res.status(STATUS_CODE_CREATED)
         .send({ token });
     })

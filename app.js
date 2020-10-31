@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const { celebrate, Joi, errors } = require('celebrate');
 const cors = require('cors');
 
@@ -20,11 +21,18 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
   useCreateIndex: true,
   useFindAndModify: false,
 });
+
 const auth = require('./middleware/auth');
 
 app.use(cors());
 app.use(jsonParser);
 app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Server will crash now');
+  }, 0);
+});
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
