@@ -1,0 +1,9 @@
+.authentication__container {
+  max-width: 358px;
+  margin-top:60px;
+  margin-bottom: 120px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}

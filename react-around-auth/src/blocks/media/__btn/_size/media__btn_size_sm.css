@@ -1,0 +1,22 @@
+.media__btn_size_sm {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #fff;
+  background-size: 7px 7px;
+  margin-left: 24px;
+  margin-bottom: -6px;
+}
+
+
+@media screen and (max-width: 320px) {
+  .media__btn_size_sm {
+    font-size: 14px;
+    line-height: 17px;
+    width: 18px;
+    height: 18px;
+    background-size: 5px 5px;
+    margin-left: 12px;
+    display: inline-block;
+    margin-bottom: -14px;
+  }
+}

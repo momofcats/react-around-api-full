@@ -1,0 +1,9 @@
+.authentication__link {
+  margin-left: 5px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.authentication__link:hover {
+  opacity: .6;
+}

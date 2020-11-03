@@ -1,0 +1,9 @@
+@import url('./__container/authentication___container.css');
+@import url('./__link/authentication__link.css');
+@import url('__title/authentication__title.css');
+@import url('__nav/authentication__nav.css');
+
+.authentication {
+  display: flex;
+  justify-content: center;
+}

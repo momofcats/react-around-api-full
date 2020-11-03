@@ -1,0 +1,10 @@
+.card__del {
+  background-image: url('../../../images/del-icon.svg');
+  width: 18px;
+  height: 19px;
+  border-style: none;
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  background-color: transparent;
+}

@@ -1,0 +1,12 @@
+.media__body {
+  margin: 0;
+  padding: 0;
+  margin-left: 30px;
+}
+
+@media screen and (max-width: 480px) {
+  .media__body {
+    max-width: 282px;
+    margin-left: 0;
+  }
+}

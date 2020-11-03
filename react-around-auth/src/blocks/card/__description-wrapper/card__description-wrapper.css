@@ -1,0 +1,5 @@
+.card__description-wrapper {
+  justify-content: space-between;
+  display: flex;
+  padding: 25px 21px;
+}

@@ -1,0 +1,8 @@
+.menu__item {
+  text-decoration: none;
+  color: inherit;
+}
+
+.menu__item:hover {
+  opacity: .6;
+}
