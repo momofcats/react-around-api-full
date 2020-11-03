@@ -4,5 +4,5 @@ This repository contains the full API of "Around the U.S." project that features
 
 [A link to repository with the complete React application which uses this API](https://github.com/momofcats/react-around-auth)
 
-[link to the website that hosts API](http://ykhilko.students.nomoreparties.site)
+[ A link to the website that hosts API](http://ykhilko.students.nomoreparties.site)
 
