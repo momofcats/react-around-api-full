@@ -71,9 +71,12 @@ function App() {
 				setUserEmail(credentials.email);
 				setLoggedIn(true);
 			})
-			.then(() => history.push("/"))
+			.then(() => {
+				history.push("/");
+			})
 			.catch((err) => {
 				console.log(err);
+				setIsFailPopupOpen(true);
 			});
 	}
 
