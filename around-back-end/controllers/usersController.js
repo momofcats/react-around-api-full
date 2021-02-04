@@ -25,10 +25,7 @@ const getUsers = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  let userId = req.params.id;
-  if (userId === 'me') {
-    userId = req.user._id;
-  }
+  const userId = req.user._id;
   User.findById(userId)
     .then((user) => {
       if (!user) {
@@ -74,9 +71,31 @@ const loginUser = (req, res, next) => {
     })
     .catch(next);
 };
+
+const updateAvatar = (req, res, next) => {
+  const userId = req.user._id;
+  const { avatar } = req.body;
+  if (!avatar) {
+    throw new BadRequestError('Please provide valid url');
+  }
+  return User.findByIdAndUpdate(userId, { avatar }, {
+    new: true,
+    runValidators: true,
+    upsert: true,
+  })
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError("Can't find such user");
+      }
+      return res.status(STATUS_CODE_OK).send(user);
+    })
+    .catch(next);
+};
+
 module.exports = {
   getUsers,
   getUser,
   addUser,
   loginUser,
+  updateAvatar,
 };
