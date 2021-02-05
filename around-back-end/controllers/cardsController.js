@@ -5,14 +5,14 @@ const {
   STATUS_CODE_CREATED,
 } = require('../utils/statusCodes');
 
+const errorMessages = require('../utils/errorMessages');
 const NotFoundError = require('../errors/not-found-err');
-const BadRequestError = require('../errors/bad-req-err');
 
 const getCards = (req, res, next) => {
   Card.find({}).select('+owner')
     .then((cards) => {
       if (cards.length === 0) {
-        throw new NotFoundError('Cards were not found');
+        throw new NotFoundError(errorMessages.notFoundCards);
       }
       return res.status(STATUS_CODE_OK).send(cards);
     })
@@ -32,7 +32,7 @@ const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (!card) {
-        throw new BadRequestError('Card Id is not found');
+        throw new NotFoundError(errorMessages.noMatchingCard);
       }
       return res.status(STATUS_CODE_OK).send(card);
     }).catch(next);
@@ -48,7 +48,7 @@ const addLike = (req, res, next) => {
     })
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Card Id is not found');
+        throw new NotFoundError(errorMessages.noMatchingCard);
       }
       return res.status(STATUS_CODE_OK).send(card);
     })
@@ -65,7 +65,7 @@ const removeLike = (req, res, next) => {
     })
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Card Id is not found');
+        throw new NotFoundError(errorMessages.noMatchingCard);
       }
       return res.status(STATUS_CODE_OK).send(card);
     })

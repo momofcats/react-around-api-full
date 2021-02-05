@@ -8,7 +8,8 @@ const {
 
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-req-err');
-const ForbiddenError = require('../errors/forbidden-err');
+const errorMessages = require('../utils/errorMessages');
+const ConflictError = require('../errors/conflict-err');
 
 const SALT = 10;
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -17,7 +18,7 @@ const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       if (users.length === 0) {
-        throw new NotFoundError('Users were not found');
+        throw new NotFoundError(errorMessages.notFoundUsers);
       }
       return res.status(STATUS_CODE_OK).send(users);
     })
@@ -29,7 +30,7 @@ const getUser = (req, res, next) => {
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('No user with matching ID found');
+        throw new NotFoundError(errorMessages.noMatchingId);
       }
       return res.status(STATUS_CODE_OK).send(user);
     })
@@ -41,12 +42,12 @@ const addUser = (req, res, next) => {
     name, about, avatar, email, password,
   } = req.body;
   if (!email || !password) {
-    throw new BadRequestError('Email or password should not be empty');
+    throw new BadRequestError(errorMessages.emptyCredentials);
   }
   return User.findOne({ email })
     .then((admin) => {
       if (admin) {
-        throw new ForbiddenError('User with this email already exists');
+        throw new ConflictError(errorMessages.existingUser);
       }
       return bcrypt.hash(password, SALT)
         .then((hash) => User.create({
@@ -60,7 +61,7 @@ const addUser = (req, res, next) => {
 const loginUser = (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    throw new BadRequestError('Email or password should not be empty');
+    throw new BadRequestError(errorMessages.emptyCredentials);
   }
   return User.findUserByCredentials(email, password)
     .then((user) => {
@@ -76,7 +77,7 @@ const updateAvatar = (req, res, next) => {
   const userId = req.user._id;
   const { avatar } = req.body;
   if (!avatar) {
-    throw new BadRequestError('Please provide valid url');
+    throw new BadRequestError(errorMessages.invalidUrl);
   }
   return User.findByIdAndUpdate(userId, { avatar }, {
     new: true,
@@ -85,7 +86,7 @@ const updateAvatar = (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError("Can't find such user");
+        throw new NotFoundError(errorMessages.noMatchingId);
       }
       return res.status(STATUS_CODE_OK).send(user);
     })
@@ -96,7 +97,7 @@ const updateUserInfo = (req, res, next) => {
   const userId = req.user._id;
   const { name, about } = req.body;
   if (!name || !about) {
-    throw new BadRequestError('Please fill out the fields');
+    throw new BadRequestError(errorMessages.emptyCredentials);
   }
   return User.findByIdAndUpdate(userId, { name, about }, {
     new: true,
@@ -105,7 +106,7 @@ const updateUserInfo = (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError("Can't find such user");
+        throw new NotFoundError(errorMessages.noMatchingId);
       }
       return res.status(STATUS_CODE_OK).send(user);
     })
