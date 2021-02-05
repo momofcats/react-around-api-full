@@ -9,7 +9,7 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-req-err');
 
 const getCards = (req, res, next) => {
-  Card.find({})
+  Card.find({}).select('+owner')
     .then((cards) => {
       if (cards.length === 0) {
         throw new NotFoundError('Cards were not found');
@@ -38,4 +38,39 @@ const deleteCard = (req, res, next) => {
     }).catch(next);
 };
 
-module.exports = { getCards, createCard, deleteCard };
+const addLike = (req, res, next) => {
+  const userId = req.user._id;
+  Card.findByIdAndUpdate(req.params.cardId, { $push: { likes: userId } },
+    {
+      new: true,
+      runValidators: true,
+      upsert: true,
+    })
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Card Id is not found');
+      }
+      return res.status(STATUS_CODE_OK).send(card);
+    })
+    .catch(next);
+};
+
+const removeLike = (req, res, next) => {
+  const userId = req.user._id;
+  Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: userId } },
+    {
+      new: true,
+      runValidators: true,
+      upsert: true,
+    })
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Card Id is not found');
+      }
+      return res.status(STATUS_CODE_OK).send(card);
+    })
+    .catch(next);
+};
+module.exports = {
+  getCards, createCard, deleteCard, addLike, removeLike,
+};

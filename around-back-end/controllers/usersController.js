@@ -92,10 +92,31 @@ const updateAvatar = (req, res, next) => {
     .catch(next);
 };
 
+const updateUserInfo = (req, res, next) => {
+  const userId = req.user._id;
+  const { name, about } = req.body;
+  if (!name || !about) {
+    throw new BadRequestError('Please fill out the fields');
+  }
+  return User.findByIdAndUpdate(userId, { name, about }, {
+    new: true,
+    runValidators: true,
+    upsert: true,
+  })
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError("Can't find such user");
+      }
+      return res.status(STATUS_CODE_OK).send(user);
+    })
+    .catch(next);
+};
+
 module.exports = {
   getUsers,
   getUser,
   addUser,
   loginUser,
   updateAvatar,
+  updateUserInfo,
 };
