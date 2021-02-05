@@ -1,8 +1,0 @@
-.media__btn_hoverable {
-  opacity: 0;
-  transform: opacity;
-}
-
-.media__btn_hoverable:hover {
-  opacity: 1;
-}

@@ -1,5 +1,0 @@
-.popup_role_fade-out {
-  visibility: visible;
-  opacity: 1;
-  transition: visibility 0s 250ms, opacity 250ms ease-out;
-}
