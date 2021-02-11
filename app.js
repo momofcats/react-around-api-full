@@ -12,13 +12,13 @@ const errorHandler = require('./middleware/errorHandler');
 
 const jsonParser = bodyParser.json();
 
-const { PORT = 3000, DATABASE_URL, NODE_ENV } = process.env;
+const { PORT = 3000, MONGODB_URI, NODE_ENV } = process.env;
 const NotFoundError = require('./errors/not-found-err');
 const errorMessages = require('./utils/errorMessages');
 
 const app = express();
 
-mongoose.connect(NODE_ENV === 'production' ? DATABASE_URL : 'mongodb://localhost:27017/aroundb', {
+mongoose.connect(NODE_ENV === 'production' ? MONGODB_URI : 'mongodb+srv://ykhilko:Kotiki&murmotiki@aroundb.ydnqx.mongodb.net/<dbname>?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
