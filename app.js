@@ -18,7 +18,7 @@ const errorMessages = require('./utils/errorMessages');
 
 const app = express();
 
-mongoose.connect(NODE_ENV === 'production' ? MONGODB_URI : 'mongodb+srv://ykhilko:Kotiki&murmotiki@aroundb.ydnqx.mongodb.net/<dbname>?retryWrites=true&w=majority', {
+mongoose.connect(NODE_ENV === 'production' ? MONGODB_URI : 'mongodb+srv://ykhilko:Kotiki&murmotiki@aroundb.ydnqx.mongodb.net/aroundb?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
