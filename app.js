@@ -12,7 +12,7 @@ const errorHandler = require('./middleware/errorHandler');
 
 const jsonParser = bodyParser.json();
 
-const { PORT = 3000, DATABASE_URL, NODE_ENV } = process.env;
+const { PORT = 80, DATABASE_URL, NODE_ENV } = process.env;
 const NotFoundError = require('./errors/not-found-err');
 const errorMessages = require('./utils/errorMessages');
 
