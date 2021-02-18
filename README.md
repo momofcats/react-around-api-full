@@ -1,5 +1,6 @@
 # Around the US API
-
+This repository contains the api for [Around the US App](https://github.com/momofcats/react-around-auth).
+The API server is buid with the Express.js and MongoDb and hosted on heroku.
 All responses come in standard JSON. All requests must include a content-type of application/json and the body must be valid JSON.
 
 Root-endpoint:
