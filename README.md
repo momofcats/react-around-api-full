@@ -253,6 +253,9 @@ Successful Response:
 # Acknowledgement
 This API was created as a part of Practicum by Yandex curriculum.
 
-
+# Teachnologies 
+ * Node.js
+ * Express.js
+ * MongoDb
 
 
