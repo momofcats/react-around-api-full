@@ -2,7 +2,7 @@
 
 All responses come in standard JSON. All requests must include a content-type of application/json and the body must be valid JSON.
 
-Root-endpoint: 
+Root-endpoint:
 
     https://react-around-api.herokuapp.com
 
@@ -20,57 +20,56 @@ Root-endpoint:
 
 ## Signup
 
-Request: 
+Request:
 
     POST /signup
+    Content-Type: application/json
 
     Body:
         {
           “email”: “foo@bar.com”,
           “password”: “12345”,
         }
+
 Successful Response:
 
     HTTP/1.1 201 OK
-    Content-Type: application/json
+
         {
           “email”: “foo@bar.com”,
           “password”: “passwordhash”,
           “_id”: “902dae4c9a05e700048b9aak”
 
         }
+
 ## Login
 
 Request:
 
      POST /signin
+     Content-Type: application/json
 
-     Body: 
+     Body:
          {
             “email”: “foo@bar.com”,
             “password”: “12345”,
           }
 
- Successful Response:
- 
+Successful Response:
+
     HTTP/1.1 201 OK
-    Content-Type: application/json
 
         {"token":                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJfaWQiOiI2MDJkYWU0YzlhMDVlNzAwMDQ4YjlhYWYiLCJpYXQiOjE2MTM2MDc4NjYsImV4cCI6MTYxNDIxMjY2Nn0.anh7WUfmblTxP8cVR2lOkx-7qB95Et1Bvd10B7yhsLQ"}
 
-## Return information about an authorized user 
+## Return information about an authorized user
 
 Request:
 
     GET /users/me
+    Content-Type: application/json
+    Authentication: Bearer “token”
 
-    Headers: 
-        {
-         Authentication: Bearer “token”
-        }
-
-
-Successful Response: 
+Successful Response:
 
     HTTP/1.1 200 OK
         {
@@ -78,16 +77,14 @@ Successful Response:
           "email":"foo@barl.com"
         }
 
-## Update user info 
+## Update user info
 
 Request:
 
     PATCH /users/me
+    Content-Type: application/json
+    Authentication: Bearer “token”
 
-    Headers: 
-        {
-          Authentication: Bearer “token”
-        }
 Successful Response:
 
      HTTP/1.1 200 OK
@@ -98,16 +95,19 @@ Successful Response:
            "name":"John Doe"
          }
 
-## Update an avatar 
+## Update an avatar
 
 Request:
 
-    PATCH users/me/avatar 
+    PATCH users/me/avatar
+    Content-Type: application/json
+    Authentication: Bearer “token”
 
-    Headers: 
-        {
-          Authentication: Bearer “token”
-        }
+    Body:
+    {
+      “Avatar”: “www.example.jpg”
+    }
+
 Successful Response:
 
     HTTP/1.1 200 OK
@@ -117,27 +117,24 @@ Successful Response:
       "email":"foo@bar.com",
       "about":"I do some work",
       "name":"John Doe",
-      “Avatar”: “www.example.com” 
+      “Avatar”: “www.example.com”
     }
 
-## Create a card 
+## Create a card
 
 Request:
 
     POST /cards
-
-    Headers: 
-        {
-          Authentication: Bearer “token”
-        }
-
-    Body: 
+    Content-Type: application/json
+    Authentication: Bearer “token”
+   
+    Body:
         {
           "name":"Place",
           "link":"https://image.com",
         }
 
-Successful Response: 
+Successful Response:
 
     HTTP/1.1 201 OK
 
@@ -149,18 +146,15 @@ Successful Response:
       "createdAt":"2021-02-18T18:45:23.548Z"
     }
 
-## Return all cards from the database 
+## Return all cards from the database
 
 Request:
 
     GET /cards
+    Content-Type: application/json
+    Authentication: Bearer “token”
 
-    Headers: 
-        {
-          Authentication: Bearer “token”
-        }
-
-Successful Response: 
+Successful Response:
 
     HTTP/1.1 200 OK
 
@@ -183,16 +177,14 @@ Successful Response:
       }
     ]
 
-## Delete card by id 
+## Delete card by id
 
 Request:
 
-    DELETE /cards/:cardId 
-    Headers: 
+    DELETE /cards/:cardId
+    Content-Type: application/json
+    Authentication: Bearer “token”
 
-      {
-        Authentication: Bearer “token”
-      }
 Successful Response:
 
     HTTP/1.1 200 OK
@@ -205,15 +197,13 @@ Successful Response:
       "createdAt":"2021-02-18T18:45:23.548Z"
     }
 
-## Add likes 
+## Add likes
 
 Request:
 
     PUT /cards/likes/:cardId
-    Headers: 
-      {
-        Authentication: Bearer “token”
-      }
+    Content-Type: application/json
+    Authentication: Bearer “token”
 
 Successful Response:
 
@@ -227,18 +217,15 @@ Successful Response:
       "createdAt":"2021-02-18T18:45:23.548Z"
     }
 
-## Remove likes 
+## Remove likes
 
 Request:
 
     DELETE /cards/likes:cardId
+    Content-Type: application/json
+    Authentication: Bearer “token”
 
-    Headers: 
-        {
-          Authentication: Bearer “token”
-        }
-
-Successful Response: 
+Successful Response:
 
     HTTP/1.1 200 OK
 
@@ -251,11 +238,11 @@ Successful Response:
     }
 
 # Acknowledgement
+
 This API was created as a part of Practicum by Yandex curriculum.
 
-# Teachnologies 
- * Node.js
- * Express.js
- * MongoDb
+# Teachnologies
 
-
+- Node.js
+- Express.js
+- MongoDb
