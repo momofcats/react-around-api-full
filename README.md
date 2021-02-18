@@ -35,72 +35,78 @@ Request:
           “password”: “passwordhash”,
           “_id”: “902dae4c9a05e700048b9aak”
 
-    }
+        }
 ## Login
 
-POST /signin
-Body: 
-    {
-      “email”: “foo@bar.com”,
-      “password”: “12345”,
+Request:
 
-    }
+     POST /signin
+     Body: 
+         {
+            “email”: “foo@bar.com”,
+            “password”: “12345”,
+          }
 
-Successful Response:
-HTTP/1.1 201 OK
-Content-Type: application/json
-    {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDJkYWU0YzlhMDVlNzAwMDQ4YjlhYWYiLCJpYXQiOjE2MTM2MDc4NjYsImV4cCI6MTYxNDIxMjY2Nn0.anh7WUfmblTxP8cVR2lOkx-7qB95Et1Bvd10B7yhsLQ"
+ Successful Response:
+ 
+    HTTP/1.1 201 OK
+    Content-Type: application/json
+        {
+          "token":                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDJkYWU0YzlhMDVlNzAwMDQ4YjlhYWYiLCJpYXQiOjE2MTM2MDc4NjYsImV4cCI6MTYxNDIxMjY2Nn0.anh7WUfmblTxP8cVR2lOkx-7qB95Et1Bvd10B7yhsLQ"
 
-    }
+        }
 
 ## Return information about an authorized user 
 
 Request:
-GET /users/me
 
-Headers: 
-    {
-     Authentication: Bearer “token”
-    }
+    GET /users/me
+    Headers: 
+        {
+         Authentication: Bearer “token”
+        }
 
 
 Successful Response: 
 
-HTTP/1.1 200 OK
-    {
-      "_id":"902dae4c9a05e700048b9aak",
-      "email":"foo@barl.com"
-    }
+    HTTP/1.1 200 OK
+        {
+          "_id":"902dae4c9a05e700048b9aak",
+          "email":"foo@barl.com"
+        }
 
 ## Update user info 
 
 Request:
-PATCH /users/me
-Headers: 
-    {
-      Authentication: Bearer “token”
-    }
-Successful Response: 
-HTTP/1.1 200 OK
-    {
-      "_id":"902dae4c9a05e700048b9aak",
-      "email":"foo@bar.com",
-      "about":"I do some work",
-      "name":"John Doe"
-    }
+
+    PATCH /users/me
+    Headers: 
+        {
+          Authentication: Bearer “token”
+        }
+Successful Response:
+
+     HTTP/1.1 200 OK
+         {
+           "_id":"902dae4c9a05e700048b9aak",
+           "email":"foo@bar.com",
+           "about":"I do some work",
+           "name":"John Doe"
+         }
 
 ## Update an avatar 
 
-Request: 
-PATCH users/me/avatar 
+Request:
 
-Headers: 
-    {
-      Authentication: Bearer “token”
-    }
-Successful Response: 
-HTTP/1.1 200 OK
+    PATCH users/me/avatar 
+
+    Headers: 
+        {
+          Authentication: Bearer “token”
+        }
+Successful Response:
+
+    HTTP/1.1 200 OK
 
     {
       "_id":"902dae4c9a05e700048b9aak",
@@ -113,18 +119,20 @@ HTTP/1.1 200 OK
 ## Create a card 
 
 Request:
-POST /cards
-Headers: 
-    {
-      Authentication: Bearer “token”
-    }
-Body: 
-    {
-      "name":"Place",
-      "link":"https://image.com",
-    }
+
+    POST /cards
+    Headers: 
+        {
+          Authentication: Bearer “token”
+        }
+    Body: 
+        {
+          "name":"Place",
+          "link":"https://image.com",
+        }
 Successful Response: 
-HTTP/1.1 201 OK
+
+    HTTP/1.1 201 OK
 
     {
       "likes":[],
@@ -137,13 +145,15 @@ HTTP/1.1 201 OK
 ## Return all cards from the database 
 
 Request:
-GET /cards
-Headers: 
-    {
-      Authentication: Bearer “token”
-    }
+
+    GET /cards
+    Headers: 
+        {
+          Authentication: Bearer “token”
+        }
 Successful Response: 
-HTTP/1.1 200 OK
+
+    HTTP/1.1 200 OK
 
     [
       {
@@ -167,13 +177,15 @@ HTTP/1.1 200 OK
 ## Delete card by id 
 
 Request:
-DELETE /cards/:cardId 
-Headers: 
-  {
-    Authentication: Bearer “token”
-  }
+
+    DELETE /cards/:cardId 
+    Headers: 
+      {
+        Authentication: Bearer “token”
+      }
 Successful Response:
-HTTP/1.1 200 OK
+
+    HTTP/1.1 200 OK
 
     {
       "likes":[],
