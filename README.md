@@ -5,13 +5,13 @@ All responses come in standard JSON. All requests must include a content-type of
 
 # Response Codes
 
-200: Success
-201: Created
-400: Bad request
-404: Not found
-403: Forbidden
-409: Conflict
-401: Unauthorized
+    200: Success
+    201: Created
+    400: Bad request
+    404: Not found
+    403: Forbidden
+    409: Conflict
+    401: Unauthorized
 
 # Endpoints, Sample Requests and Responses
 
@@ -19,21 +19,21 @@ All responses come in standard JSON. All requests must include a content-type of
 
 Request: 
 
-POST /signup
+    POST /signup
 
-Body:
-    {
-      “email”: “foo@bar.com”,
-      “password”: “12345”,
-    }
+    Body:
+        {
+          “email”: “foo@bar.com”,
+          “password”: “12345”,
+        }
 
-Successful Response:
-HTTP/1.1 201 OK
-Content-Type: application/json
-    {
-      “email”: “foo@bar.com”,
-      “password”: “passwordhash”,
-      “_id”: “902dae4c9a05e700048b9aak”
+    Successful Response:
+    HTTP/1.1 201 OK
+    Content-Type: application/json
+        {
+          “email”: “foo@bar.com”,
+          “password”: “passwordhash”,
+          “_id”: “902dae4c9a05e700048b9aak”
 
     }
 ## Login
