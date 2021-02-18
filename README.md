@@ -16,7 +16,7 @@ Root-endpoint:
     409: Conflict
     401: Unauthorized
 
-# Path, Sample Requests and Responses
+# Paths, Sample Requests and Responses
 
 ## Signup
 
