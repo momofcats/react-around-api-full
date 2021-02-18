@@ -1,7 +1,10 @@
 # Around the US API
-Base URL: 
-https://react-around-api.herokuapp.com
+
 All responses come in standard JSON. All requests must include a content-type of application/json and the body must be valid JSON.
+
+Root-endpoint: 
+
+    https://react-around-api.herokuapp.com
 
 # Response Codes
 
@@ -13,7 +16,7 @@ All responses come in standard JSON. All requests must include a content-type of
     409: Conflict
     401: Unauthorized
 
-# Endpoints, Sample Requests and Responses
+# Path, Sample Requests and Responses
 
 ## Signup
 
@@ -26,8 +29,8 @@ Request:
           “email”: “foo@bar.com”,
           “password”: “12345”,
         }
+Successful Response:
 
-    Successful Response:
     HTTP/1.1 201 OK
     Content-Type: application/json
         {
@@ -41,6 +44,7 @@ Request:
 Request:
 
      POST /signin
+
      Body: 
          {
             “email”: “foo@bar.com”,
@@ -51,16 +55,15 @@ Request:
  
     HTTP/1.1 201 OK
     Content-Type: application/json
-        {
-          "token":                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDJkYWU0YzlhMDVlNzAwMDQ4YjlhYWYiLCJpYXQiOjE2MTM2MDc4NjYsImV4cCI6MTYxNDIxMjY2Nn0.anh7WUfmblTxP8cVR2lOkx-7qB95Et1Bvd10B7yhsLQ"
 
-        }
+        {"token":                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJfaWQiOiI2MDJkYWU0YzlhMDVlNzAwMDQ4YjlhYWYiLCJpYXQiOjE2MTM2MDc4NjYsImV4cCI6MTYxNDIxMjY2Nn0.anh7WUfmblTxP8cVR2lOkx-7qB95Et1Bvd10B7yhsLQ"}
 
 ## Return information about an authorized user 
 
 Request:
 
     GET /users/me
+
     Headers: 
         {
          Authentication: Bearer “token”
@@ -80,6 +83,7 @@ Successful Response:
 Request:
 
     PATCH /users/me
+
     Headers: 
         {
           Authentication: Bearer “token”
@@ -121,15 +125,18 @@ Successful Response:
 Request:
 
     POST /cards
+
     Headers: 
         {
           Authentication: Bearer “token”
         }
+
     Body: 
         {
           "name":"Place",
           "link":"https://image.com",
         }
+
 Successful Response: 
 
     HTTP/1.1 201 OK
@@ -147,10 +154,12 @@ Successful Response:
 Request:
 
     GET /cards
+
     Headers: 
         {
           Authentication: Bearer “token”
         }
+
 Successful Response: 
 
     HTTP/1.1 200 OK
@@ -180,6 +189,7 @@ Request:
 
     DELETE /cards/:cardId 
     Headers: 
+
       {
         Authentication: Bearer “token”
       }
@@ -199,13 +209,15 @@ Successful Response:
 
 Request:
 
-PUT /cards/likes/:cardId
-Headers: 
-  {
-    Authentication: Bearer “token”
-  }
-Successful Response: 
-HTTP/1.1 200 OK
+    PUT /cards/likes/:cardId
+    Headers: 
+      {
+        Authentication: Bearer “token”
+      }
+
+Successful Response:
+
+    HTTP/1.1 200 OK
 
     {
       "likes":[userId],
@@ -218,13 +230,17 @@ HTTP/1.1 200 OK
 ## Remove likes 
 
 Request:
-DELETE /cards/likes:cardId
-Headers: 
-    {
-      Authentication: Bearer “token”
-    }
+
+    DELETE /cards/likes:cardId
+
+    Headers: 
+        {
+          Authentication: Bearer “token”
+        }
+
 Successful Response: 
-HTTP/1.1 200 OK
+
+    HTTP/1.1 200 OK
 
     {
       "likes":[],
@@ -234,7 +250,8 @@ HTTP/1.1 200 OK
       "createdAt":"2021-02-18T18:45:23.548Z"
     }
 
-
+# Acknowledgement
+This API was created as a part of Practicum by Yandex curriculum.
 
 
 
